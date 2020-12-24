@@ -1,0 +1,29 @@
+name: tagged-release
+
+on:
+  push:
+    tags:
+      - v*
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  tagged_release:
+    name: Tagged Release
+    runs-on: windows-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+      - name: Build
+        run: cargo build --release
+
+      - uses: marvinpinto/action-automatic-releases@latest
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          prerelease: false
+          files: |
+            target/release/updater.exe

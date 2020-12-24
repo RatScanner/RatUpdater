@@ -1,0 +1,31 @@
+name: pre-release
+
+on:
+  push:
+    branches:
+      - main
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  pre_release:
+    name: Pre Release
+    runs-on: windows-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+      - name: Build
+        run: cargo build --release
+
+      - uses: marvinpinto/action-automatic-releases@latest
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          automatic_release_tag: dev
+          prerelease: true
+          title: Development Build
+          files: |
+            target/release/updater.exe
