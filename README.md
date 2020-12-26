@@ -1,7 +1,7 @@
-[![Build Status](https://github.com/RatScanner/Updater/workflows/test/badge.svg)](https://github.com/RatScanner/Updater/actions)
-[![Lines Of Code](https://tokei.rs/b1/github/RatScanner/Updater?category=code)](https://github.com/RatScanner/Updater)
+[![Build Status](https://github.com/RatScanner/RatUpdater/workflows/test/badge.svg)](https://github.com/RatScanner/RatUpdater/actions)
+[![Lines Of Code](https://tokei.rs/b1/github/RatScanner/RatUpdater?category=code)](https://github.com/RatScanner/RatUpdater)
 
-# Updater
+# Rat Updater
 
 ## Build
 

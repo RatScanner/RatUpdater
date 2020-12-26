@@ -50,7 +50,7 @@ fn update() {
     let root_path = root_path();
 
     // Update
-    updater::update(&root_path).unwrap();
+    rat_updater::update(&root_path).unwrap();
 
     // Check exists
     assert!(make_path(&root_path, "RatScanner.old").exists());
@@ -86,7 +86,7 @@ fn recover() {
     fs::File::create(make_path(&root_path, "RatScanner.old/old_x/old_b.txt")).unwrap();
 
     // Recover
-    updater::recover_from_old(&root_path).unwrap();
+    rat_updater::recover_from_old(&root_path).unwrap();
 
     // Check exists
     assert!(make_path(&root_path, "q.txt").exists());
@@ -114,5 +114,5 @@ fn root_path() -> PathBuf {
 }
 
 fn executable_path() -> PathBuf {
-    env!("CARGO_BIN_EXE_updater").into()
+    env!("CARGO_BIN_EXE_rat-updater").into()
 }

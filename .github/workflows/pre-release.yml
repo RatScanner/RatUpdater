@@ -19,7 +19,9 @@ jobs:
         with:
           toolchain: stable
       - name: Build
-        run: cargo build --release
+        run: |
+          cargo build --release
+          mv target/release/rat-updater.exe target/release/RatUpdater.exe
 
       - uses: marvinpinto/action-automatic-releases@latest
         with:
@@ -28,4 +30,4 @@ jobs:
           prerelease: true
           title: Development Build
           files: |
-            target/release/updater.exe
+            target/release/RatUpdater.exe

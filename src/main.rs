@@ -14,12 +14,12 @@ fn main() {
 
     // Update rat scanner
     if args.update {
-        if let Err(e) = updater::update(&args.root_path) {
+        if let Err(e) = rat_updater::update(&args.root_path) {
             eprintln!("  ❌    An error occurred while updating: {:?}\n", e.error);
 
             // Recover from old
             if e.should_try_recover {
-                if let Err(e) = updater::recover_from_old(&args.root_path) {
+                if let Err(e) = rat_updater::recover_from_old(&args.root_path) {
                     eprintln!("  ❌    An error occurred while recovering: {:?}\n", e);
                 }
             }
@@ -31,7 +31,7 @@ fn main() {
 
     // Start rat scanner
     if args.start {
-        if let Err(e) = updater::start_rat_scanner(&args.root_path) {
+        if let Err(e) = rat_updater::start_rat_scanner(&args.root_path) {
             eprintln!(
                 "  ❌    An error occurred while starting RatScanner: {:?}\n",
                 e
