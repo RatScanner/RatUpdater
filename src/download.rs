@@ -19,7 +19,7 @@ pub fn download_zip(download_url: &str) -> Result<File> {
 
     // Check for other errors
     if response.error() {
-        bail!("Received tatus code {}", response.status());
+        bail!("Received status code {}", response.status());
     }
 
     // Get content length
