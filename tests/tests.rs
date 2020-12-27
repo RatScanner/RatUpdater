@@ -10,6 +10,7 @@ use std::time::{Duration, Instant};
 #[test]
 #[serial]
 fn integration() {
+    // Run Updater
     let mut child = Command::new(executable_path())
         .args(&[
             OsStr::new("--root-path"),
@@ -20,7 +21,7 @@ fn integration() {
         .unwrap();
 
     let start = Instant::now();
-    let end = start + Duration::from_secs(120);
+    let end = start + Duration::from_secs(300);
     loop {
         match child.try_wait() {
             Ok(Some(status)) => {
@@ -42,6 +43,11 @@ fn integration() {
         }
         thread::yield_now();
     }
+
+    // Check exists
+    let root_path = root_path();
+    assert!(make_path(&root_path, "RatScanner.old").exists());
+    assert!(make_path(&root_path, "RatScanner.exe").exists());
 }
 
 #[test]
