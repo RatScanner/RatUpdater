@@ -9,7 +9,7 @@ fn main() {
     let args = match args::get_args() {
         Ok(args) => args,
         Err(e) => {
-            eprintln!("  ❌    Failed to parse args: {:?}\n", e);
+            eprintln!("   X    Failed to parse args: {:?}\n", e);
 
             pause();
             process::exit(1);
@@ -19,12 +19,12 @@ fn main() {
     // Update rat scanner
     if args.update {
         if let Err(e) = rat_updater::update(&args.root_path) {
-            eprintln!("  ❌    An error occurred while updating: {:?}\n", e.error);
+            eprintln!("   X    An error occurred while updating: {:?}\n", e.error);
 
             // Recover from old
             if e.should_try_recover {
                 if let Err(e) = rat_updater::recover_from_old(&args.root_path) {
-                    eprintln!("  ❌    An error occurred while recovering: {:?}\n", e);
+                    eprintln!("   X    An error occurred while recovering: {:?}\n", e);
                 }
             }
 
@@ -37,7 +37,7 @@ fn main() {
     if args.start {
         if let Err(e) = rat_updater::start_rat_scanner(&args.root_path) {
             eprintln!(
-                "  ❌    An error occurred while starting RatScanner: {:?}\n",
+                "   X    An error occurred while starting RatScanner: {:?}\n",
                 e
             );
 

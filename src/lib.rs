@@ -62,7 +62,7 @@ pub fn update(root_path: &Path) -> std::result::Result<(), UpdateError> {
     .map_err(|e| UpdateError::new(e, true))?;
 
     // Success
-    println!("  ✔️     Successfully updated\n");
+    println!("        Successfully updated\n");
 
     Ok(())
 }
@@ -74,7 +74,7 @@ pub fn recover_from_old(root_path: &Path) -> Result<()> {
     run("Trying to recover", || fs::recover_from_old(&options))?;
 
     // Success
-    println!("  ⚠     Successfully recovered\n");
+    println!("        Successfully recovered\n");
 
     Ok(())
 }
