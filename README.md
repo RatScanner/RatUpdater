@@ -19,6 +19,8 @@ cargo test
 
 ## Run
 
+> ⚠️ The updater will clear the `root-path` (which defaults to `.`) before installing the new version.
+
 ```
 cargo run -- --root-path ./tmp --update --start
 ```
