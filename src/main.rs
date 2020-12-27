@@ -1,6 +1,10 @@
 use std::process;
 
 fn main() {
+    // Windows Setup
+    #[cfg(windows)]
+    windows_setup::windows_setup();
+
     // Get args
     let args = match args::get_args() {
         Ok(args) => args,
@@ -93,5 +97,26 @@ mod args {
             update: update.unwrap_or(false),
             start: start.unwrap_or(false),
         })
+    }
+}
+
+#[cfg(windows)]
+mod windows_setup {
+    use winapi::um::consoleapi::{GetConsoleMode, SetConsoleMode};
+    use winapi::um::processenv::GetStdHandle;
+    use winapi::um::winbase::STD_INPUT_HANDLE;
+    use winapi::um::wincon::{ENABLE_EXTENDED_FLAGS, ENABLE_QUICK_EDIT_MODE};
+
+    pub fn windows_setup() {
+        // Disable quick edit
+        unsafe {
+            let h_input = GetStdHandle(STD_INPUT_HANDLE);
+            let mut prev_mode = 0;
+            GetConsoleMode(h_input, &mut prev_mode);
+            SetConsoleMode(
+                h_input,
+                (prev_mode | ENABLE_EXTENDED_FLAGS) & !ENABLE_QUICK_EDIT_MODE,
+            );
+        }
     }
 }
