@@ -1,3 +1,6 @@
+#[cfg(not(windows))]
+compile_error!("This tool is only designed/tested for windows");
+
 mod api;
 mod download;
 mod fs;
