@@ -16,9 +16,9 @@ pub fn get_resource(resource: &str) -> Result<String> {
 
 fn get_resource_response(resource: &str) -> Result<Response> {
     const API_URL: &[&str] = &[
-        "http://ratscanner.com:8080/api/v2/res/",
+        "https://api.ratscanner.com/v4/res",
+        "https://api.ratscanner.com/v3/res",
         "https://api.ratscanner.com/v2/res/",
-        "https://ratscanner.com/api/v2/res/",
     ];
 
     let mut error = None;
