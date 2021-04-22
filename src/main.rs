@@ -61,7 +61,7 @@ fn pause() {
 }
 
 mod args {
-    use anyhow::anyhow;
+    use anyhow::{anyhow, Context};
     use std::path::PathBuf;
 
     pub struct Args {
@@ -93,7 +93,14 @@ mod args {
         }
 
         Ok(Args {
-            root_path: root_path.unwrap_or_else(|| ".".into()),
+            root_path: match root_path {
+                Some(root_path) => root_path,
+                None => std::env::current_exe()
+                    .context("Could not get current exe")?
+                    .parent()
+                    .unwrap()
+                    .to_path_buf(),
+            },
             update: update.unwrap_or(false),
             start: start.unwrap_or(false),
         })

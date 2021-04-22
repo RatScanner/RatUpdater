@@ -12,6 +12,7 @@ ureq = { version = "1.5.4", features = ["json"] }
 anyhow = "1.0.36"
 remove_dir_all = "0.6.1"
 tempfile = "3.1.0"
+serde_json = "1.0.64"
 
 [target.'cfg(windows)'.dependencies]
 winapi = "0.3.9"

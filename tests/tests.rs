@@ -47,6 +47,7 @@ fn integration() {
     // Check exists
     let root_path = root_path();
     assert!(make_path(&root_path, "RatScanner.old").exists());
+    assert!(make_path(&root_path, "RatScanner.files.ref").exists());
     assert!(make_path(&root_path, "RatScanner.exe").exists());
 }
 
@@ -55,12 +56,85 @@ fn integration() {
 fn update() {
     let root_path = root_path();
 
+    // Clear root path
+    if root_path.exists() {
+        remove_dir_all::remove_dir_all(&root_path).unwrap();
+        fs::create_dir_all(&root_path).unwrap();
+    }
+
+    // Add existing file
+    fs::File::create(make_path(&root_path, "my-file.txt"))
+        .unwrap()
+        .write_all(b"Hello, world!")
+        .unwrap();
+
     // Update
     rat_updater::update(&root_path).unwrap();
 
     // Check exists
     assert!(make_path(&root_path, "RatScanner.old").exists());
+    assert!(make_path(&root_path, "RatScanner.unknown").exists());
+    assert!(make_path(&root_path, "RatScanner.files.ref").exists());
     assert!(make_path(&root_path, "RatScanner.exe").exists());
+
+    // Check RatScanner.old is empty
+    assert!(make_path(&root_path, "RatScanner.old")
+        .read_dir()
+        .unwrap()
+        .next()
+        .is_none());
+
+    // Check RatScanner.unknown (my-file.txt)
+    assert_eq!(
+        make_path(&root_path, "RatScanner.unknown")
+            .read_dir()
+            .unwrap()
+            .next()
+            .unwrap()
+            .unwrap()
+            .path()
+            .read_dir()
+            .unwrap()
+            .next()
+            .unwrap()
+            .unwrap()
+            .file_name(),
+        "my-file.txt"
+    );
+
+    // Update again
+    rat_updater::update(&root_path).unwrap();
+
+    // Check exists
+    assert!(make_path(&root_path, "RatScanner.old").exists());
+    assert!(make_path(&root_path, "RatScanner.unknown").exists());
+    assert!(make_path(&root_path, "RatScanner.files.ref").exists());
+    assert!(make_path(&root_path, "RatScanner.exe").exists());
+
+    // Check RatScanner.old is not empty
+    assert!(make_path(&root_path, "RatScanner.old")
+        .read_dir()
+        .unwrap()
+        .next()
+        .is_some());
+
+    // Check RatScanner.unknown (my-file.txt)
+    assert_eq!(
+        make_path(&root_path, "RatScanner.unknown")
+            .read_dir()
+            .unwrap()
+            .next()
+            .unwrap()
+            .unwrap()
+            .path()
+            .read_dir()
+            .unwrap()
+            .next()
+            .unwrap()
+            .unwrap()
+            .file_name(),
+        "my-file.txt"
+    );
 }
 
 #[test]

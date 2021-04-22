@@ -58,9 +58,21 @@ pub fn update(root_path: &Path) -> std::result::Result<(), UpdateError> {
     })
     .map_err(|e| UpdateError::new(e, true))?;
 
+    // Save other files
+    run("Save other files", || {
+        fs::move_to_unknown(&options).context("Failed to save other files")
+    })
+    .map_err(|e| UpdateError::new(e, true))?;
+
     // Extract zip
-    run("Extracting zip", || {
+    let created = run("Extracting zip", || {
         fs::extract_zip(zip, &options).context("Failed to extract zip")
+    })
+    .map_err(|e| UpdateError::new(e, true))?;
+
+    // Save files ref
+    run("Save files ref", || {
+        fs::save_files_ref(created, &options).context("Failed to save files ref")
     })
     .map_err(|e| UpdateError::new(e, true))?;
 
