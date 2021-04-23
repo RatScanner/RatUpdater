@@ -7,7 +7,7 @@ edition = "2018"
 [dependencies]
 zip = "0.5.9"
 indicatif = "0.15.0"
-ureq = { version = "1.5.4", features = ["json"] }
+ureq = { version = "2.1.0", features = ["json"] }
 anyhow = "1.0.36"
 remove_dir_all = "0.6.1"
 tempfile = "3.1.0"

@@ -1,9 +1,10 @@
-use anyhow::{anyhow, bail, Result};
+use anyhow::{anyhow, Result};
+use std::time::Duration;
 use ureq::Response;
 
 pub fn get_resource(resource: &str) -> Result<String> {
     let response = get_resource_response(resource)?;
-    let response = response.into_json()?;
+    let response = response.into_json::<serde_json::Value>()?;
 
     let value = response
         .get("value")
@@ -35,21 +36,11 @@ fn get_resource_response(resource: &str) -> Result<Response> {
 
 fn request(path: &str) -> Result<Response> {
     // Make request
-    let response = ureq::get(path)
-        .timeout_connect(15_000)
-        .timeout_read(15_000)
-        .call();
-
-    // Check for synthetic error
-    if response.synthetic() {
-        let error = response.into_synthetic_error().unwrap();
-        return Err(error.into());
-    }
-
-    // Check for other errors
-    if response.error() {
-        bail!("Received tatus code {}", response.status());
-    }
+    let agent = ureq::AgentBuilder::new()
+        .timeout_connect(Duration::from_secs(15))
+        .timeout_read(Duration::from_secs(15))
+        .build();
+    let response = agent.get(path).call()?;
 
     Ok(response)
 }

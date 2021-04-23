@@ -1,26 +1,17 @@
-use anyhow::{anyhow, bail, Context, Result};
+use anyhow::{anyhow, Context, Result};
 use indicatif::{ProgressBar, ProgressStyle};
 use std::fs::File;
 use std::io::{self, Read};
+use std::time::Duration;
 use tempfile::tempfile;
 
 pub fn download_zip(download_url: &str) -> Result<File> {
     // Make request
-    let response = ureq::get(download_url)
-        .timeout_connect(15_000)
-        .timeout_read(15_000)
-        .call();
-
-    // Check for synthetic error
-    if response.synthetic() {
-        let error = response.into_synthetic_error().unwrap();
-        return Err(error.into());
-    }
-
-    // Check for other errors
-    if response.error() {
-        bail!("Received status code {}", response.status());
-    }
+    let agent = ureq::AgentBuilder::new()
+        .timeout_connect(Duration::from_secs(15))
+        .timeout_read(Duration::from_secs(15))
+        .build();
+    let response = agent.get(download_url).call()?;
 
     // Get content length
     let content_length = response
