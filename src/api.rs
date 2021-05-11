@@ -17,8 +17,8 @@ pub fn get_resource(resource: &str) -> Result<String> {
 
 fn get_resource_response(resource: &str) -> Result<Response> {
     const API_URL: &[&str] = &[
-        "https://api.ratscanner.com/v4/res",
-        "https://api.ratscanner.com/v3/res",
+        "https://api.ratscanner.com/v4/res/",
+        "https://api.ratscanner.com/v3/res/",
         "https://api.ratscanner.com/v2/res/",
     ];
 
