@@ -31,7 +31,7 @@ pub fn update(root_path: &Path) -> std::result::Result<(), UpdateError> {
 
     // Get download url from api
     let download_url = run("Get download url", || {
-        api::get_resource("RSDownload").context("Failed to get download url")
+        api::get_resource("RSDownloadLink").context("Failed to get download url")
     })
     .map_err(|e| UpdateError::new(e, false))?;
 
